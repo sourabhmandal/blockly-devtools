@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { createRef, useEffect } from "react";
+import * as Blockly from "blockly";
+import { toolboxCategories, createPlayground } from "@blockly/dev-tools";
+import "./index.css";
 function App() {
+  const playRef = createRef();
+
+  useEffect(() => {
+    createPlayground(
+      document.getElementById("playDiv"),
+      (blocklyDiv, options) => {
+        return Blockly.inject(blocklyDiv, options);
+      }
+    );
+    Blockly.inject("playDiv", {
+      toolbox: toolboxCategories,
+    });
+    return () => {};
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <div ref={playRef} id="playDiv"></div>
+    </main>
   );
 }
 
